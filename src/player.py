@@ -53,21 +53,13 @@ class Player:
         """
         pass
 
-    def previous_total_return(self):
-        """
-        Calculates the total return of all the previous rounds
-
-        :return: float list with the number of total returns
-        """
-        return NUM_PLAYERS * self.previous_rounds()
-
-    def previous_total_given(self) -> []:
+    def rounds_total_given(self) -> []:
         """
         Calculates the total given amounts of all the previous rounds
 
         :return: float list with the number of total given
         """
-        return self.previous_total_return() / 2
+        return self.previous_rounds()
 
 
 class AllIn(Player):
@@ -86,7 +78,7 @@ class AllIn(Player):
 
         :return: float of money that should be given away
         """
-        return super().money
+        return self.money
 
 
 class PartOfReturn(Player):
@@ -114,10 +106,10 @@ class PartOfReturn(Player):
 
         :return: float of money that should be given away
         """
-        if len(super().giveaways) == 0:
-            return super().money * self.part_of_starting
+        if len(self.giveaways) == 0:
+            return self.money * self.part_of_starting
         else:
-            return super().previous_rounds()[:-1] * self.part_of_return
+            return self.previous_rounds()[:-1] * self.part_of_return
 
 
 class PartOfOthers(Player):
@@ -145,10 +137,10 @@ class PartOfOthers(Player):
 
         :return: float of money that should be given away
         """
-        if len(super().giveaways) == 0:
-            return super().money * self.part_of_starting
+        if len(self.giveaways) == 0:
+            return self.money * self.part_of_starting
         else:
-            previous_others_given = super().previous_total_given()[-1] - super().giveaways[-1]
+            previous_others_given = self.rounds_total_given()[-1] - self.giveaways[-1]
             return previous_others_given * self.part_of_others / (NUM_PLAYERS - 1)
 
 
@@ -194,10 +186,10 @@ class LinearExtrapolation(Player):
 
         :return: float of money that should be given away
         """
-        if len(super().giveaways) == 0:
-            return super().money * self.part_of_starting
+        if len(self.giveaways) == 0:
+            return self.money * self.part_of_starting
         else:
-            previous_others_given = super().previous_total_given() - super().giveaways
+            previous_others_given = self.rounds_total_given() - self.giveaways
             mean_others_given = previous_others_given / (NUM_PLAYERS - 1)
 
             num_rounds = len(previous_others_given)
