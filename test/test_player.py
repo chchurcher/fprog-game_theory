@@ -1,5 +1,5 @@
-from src.player import *
 import unittest
+from src.player import *
 
 
 class TestPlayer(unittest.TestCase):
