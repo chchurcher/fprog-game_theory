@@ -1,6 +1,7 @@
 from typing import Callable
 
 NUM_ROUNDS = 10
+START_ROUND = 0
 
 
 class Game:
@@ -12,14 +13,14 @@ class Game:
             players = []
 
         self.players = players
-        self.money_given_array = []  # array consiting of inputed money of players in previous rounds
+        self._money_given_array = []  # array consiting of inputed money of players in previous rounds
         self.money_return_list = []  # list with money a player got back in previous rounds
         self.calc_return_money = calc_return_money
         self.num_rounds = num_rounds
         self.current_round = 0
 
     def play(self):
-        for i in range(self.num_rounds):
+        for i in range(START_ROUND, START_ROUND + self.num_rounds):
             self.current_round = i
             self.make_round()
 
@@ -27,7 +28,7 @@ class Game:
         current_money_given_list = []
         for player in self.players:
             current_money_given_list.append(player.pay_money())
-        self.money_given_array.append(current_money_given_list)
+        self._money_given_array.append(current_money_given_list)
 
         money_return = self.calc_return_money(self)
         self.money_return_list = money_return
@@ -43,4 +44,7 @@ class Game:
 
     def get_num_players(self):
         return len(self.players)
+
+    def get_money_given_in_total_list(self):
+        return [sum(money_given_round) for money_given_round in self._money_given_array]
 

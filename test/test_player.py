@@ -22,7 +22,7 @@ class TestPlayer(unittest.TestCase):
     def test_play_desire(self):
         for player in self.players:
             try:
-                self.assertGreaterEqual(float(player.pay_desire()), 0)
+                self.assertGreaterEqual(float(player.ask_desired_pay_money()), 0)
             except ValueError:
                 self.fail("Failed to convert player money into number")
 
