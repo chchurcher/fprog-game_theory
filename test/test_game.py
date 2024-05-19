@@ -15,13 +15,13 @@ class TestGame(unittest.TestCase):
         self.game.rounds_money_list = [[7, 1, 3, 5], [3, 1, 4, 2]]
 
     def test_get_previous_rounds(self):
-        self.assertEqual(self.game.get_previous_rounds(), [7, 3, 6, 2])
+        self.assertEqual(self.game.get_money_return_list(), [7, 3, 6, 2])
 
     def test_zero_round(self):
         for participant in self.game.players:
             participant.money = 0
         self.game.make_round()
-        self.assertEqual(self.game.get_previous_rounds()[-1], 0)
+        self.assertEqual(self.game.get_money_return_list()[-1], 0)
         for participant in self.game.players:
             self.assertEqual(participant.money, 0)
 

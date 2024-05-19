@@ -30,7 +30,7 @@ class TestPlayer(unittest.TestCase):
         # Eight rounds
         previous_rounds = [list(range(0, 8))]
         for player in self.players:
-            player.set_previous_rounds(lambda: previous_rounds)
+            player.set_money_return_list(lambda: previous_rounds)
         total = self.players[0].rounds_total_given()
         self.assertEqual(total, previous_rounds)
 

@@ -12,17 +12,17 @@ class Player:
         self.strategy = strategy
         self.money = STARTING_MONEY
         self.giveaways = []
-        self.previous_rounds = lambda: []
+        self.money_return_list = lambda: []
 
-    def set_previous_rounds(self, previous_rounds):
+    def set_money_return_list(self, money_return_list):
         """
         This method is used to give a function to the Player class to get the information
          what everybody got in the last round back.
 
-        :param previous_rounds: function to return a list of all the money the players
+        :param money_return_list: function to return a list of the money a player
          got in the last rounds.
         """
-        self.previous_rounds = previous_rounds
+        self.money_return_list = money_return_list
 
     def win_money(self, win):
         """
@@ -59,7 +59,7 @@ class Player:
 
         :return: float list with the number of total given
         """
-        return self.previous_rounds()
+        return self.money_return_list()
 
 
 class AllIn(Player):
@@ -109,7 +109,7 @@ class PartOfReturn(Player):
         if len(self.giveaways) == 0:
             return self.money * self.part_of_starting
         else:
-            return self.previous_rounds()[:-1] * self.part_of_return
+            return self.money_return_list()[:-1] * self.part_of_return
 
 
 class PartOfOthers(Player):
