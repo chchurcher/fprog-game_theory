@@ -1,8 +1,10 @@
+from abc import ABC, abstractmethod
+
 NUM_ROUNDS = 10
 START_ROUND = 0
 
 
-class Game:
+class Game(ABC):
     """This class handles and executes one simulation of one game."""
 
     def __init__(self, players=None, num_rounds=NUM_ROUNDS):
@@ -15,6 +17,9 @@ class Game:
             players = []
 
         self.players = players
+        for participant in players:
+            participant.set_game_getter(lambda: self)
+
         self._money_given_array = []  # array consisting of inputted money of players in previous rounds
         self.money_return_list = []  # list with money a player got back in previous rounds
         self.num_rounds = num_rounds
@@ -22,8 +27,8 @@ class Game:
 
         # Calculate the stats at the beginning of the game
         money_starting_stats = []
-        for player in players:
-            money_starting_stats.append(player.money)
+        for participant in players:
+            money_starting_stats.append(participant.money)
         self._money_stats = [money_starting_stats]
 
     def play(self):
@@ -65,6 +70,7 @@ class Game:
         :return: list with float of total money inputted"""
         return [sum(money_given_round) for money_given_round in self._money_given_array]
 
+    @abstractmethod
     def calc_return_money(self) -> float:
         """Abstract method for calculating the return money on different methods
         :return: float of how much each player should get back"""

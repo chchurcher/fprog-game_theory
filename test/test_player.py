@@ -1,5 +1,6 @@
 import unittest
 from src.player import *
+from src.game import NoMoneyCreation
 
 
 class TestPlayer(unittest.TestCase):
@@ -11,6 +12,7 @@ class TestPlayer(unittest.TestCase):
             RandomPlayer(10),
             LinearExtrapolation(0.2)
         ]
+        self.game = NoMoneyCreation(self.players)
 
     def test_money(self):
         for player in self.players:

@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 import random
 from sklearn.linear_model import LinearRegression
 import numpy as np
@@ -9,15 +10,17 @@ STARTING_MONEY = 10.
 random.seed(100)
 
 
-class Player:
+class Player(ABC):
     """Parent class to represent a player with only the information he has in his point of view.
     Should be inherited"""
 
     def __init__(self, starting_money=STARTING_MONEY):
         self.money = starting_money
         self.money_paid_list = []
-        self.get_game: Callable[[None], Game] = lambda: Game()
+        # self.get_game: Callable[[None], Game] = None
+        self.get_game = None
 
+    @abstractmethod
     def __str__(self):
         pass
 
@@ -51,6 +54,7 @@ class Player:
         self.money -= pay_money
         return pay_money
 
+    @abstractmethod
     def ask_desired_pay_money(self) -> float:
         """
         Abstract method to be implemented by child classes to calculate the desired money for the next rounds
