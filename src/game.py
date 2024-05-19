@@ -92,7 +92,7 @@ class MultiplicationGame(Game):
         """String representation of this game"""
         return "SimpleMultiplication ({:.2f})".format(self.money_multiplier)
     
-    def __init__(self, players=None, num_rounds=NUM_ROUNDS, money_multiplier=1):
+    def __init__(self, players=None, num_rounds=NUM_ROUNDS, money_multiplier=1.):
         """Constructor method for this class. If no multiplier or 1 is given it equals NoMoneyCreation"""
         super().__init__(players=players, num_rounds=num_rounds)
         self.money_multiplier = money_multiplier
