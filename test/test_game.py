@@ -89,6 +89,15 @@ class TestGame(unittest.TestCase):
         self.assertAlmostEqual(mean_starting_money, players[0].money)
         self.assertAlmostEqual(mean_starting_money, players[-1].money)
 
+    def test_lfbp_tent_to_zero(self):
+        num_rounds = 100
+        players = [player.FixedPart(part_to_give=0.25, starting_money=10**i)
+                   for i in range(self.num_players)]
+        game1 = LinearFunctionByPlayer(players, num_rounds=num_rounds)
+        game1.play()
+        print(game1.get_states())
+        self.assertLess(game1.players[-1].money, 1.)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -108,3 +108,33 @@ class MultiplicationGame(Game):
         :return: float of how much each player gets back"""
         total_money_given = sum(self._money_given_array[-1]) * self.money_multiplier
         return total_money_given / self.get_num_players()
+
+
+class LinearFunctionByPlayer(Game):
+    """This game uses as multiplier the doubled mean percentage of the individual given money"""
+
+    def __str__(self):
+        """String representation of this game"""
+        return "LinearFunctionByPlayer"
+
+    def calc_return_money(self) -> float:
+        """Method for calculating the return money by splitting the total amount multiplied by the multiplier.
+        The multiplier is calculated as the doubled mean of the percentage the players gave away
+        If all player give all their money the multiplier is 2
+        If all player give half of their money it is 1
+        If all player give none it is obviously 0
+        :return: float of how much each player gets back"""
+
+        percentage_given_list = [1.] * self.get_num_players()
+        for i in range(self.get_num_players()):
+            money_given = self._money_given_array[-1][i]
+            money_left = self.players[i].money
+
+            if money_given + money_left < 1E-6:
+                percentage_given_list[i] = 0.5
+                continue
+            percentage_given_list[i] = money_given / (money_given + money_left)
+
+        multiplier = sum(percentage_given_list) / len(percentage_given_list) * 2.
+        total_money_given = sum(self._money_given_array[-1]) * multiplier
+        return total_money_given / self.get_num_players()
