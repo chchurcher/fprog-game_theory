@@ -39,7 +39,7 @@ class Game:
         Finally the money is distributed"""
         current_money_given_list = []
         for player in self.players:
-            current_money_given_list.append(player.pay_money())
+            current_money_given_list.append(player.get_pay_money())
         self._money_given_array.append(current_money_given_list)
 
         money_return = self.calc_return_money()
@@ -47,7 +47,7 @@ class Game:
 
         self._money_stats.append([])
         for player in self.players:
-            player.win_money(money_return)
+            player.set_win_money(money_return)
             self._money_stats[-1].append(player.money)
 
     def get_states(self):

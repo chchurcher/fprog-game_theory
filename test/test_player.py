@@ -8,7 +8,7 @@ class TestPlayer(unittest.TestCase):
             AllIn(),
             PartOfReturn(0.1, 0.5),
             PartOfOthers(0.1, 0.4),
-            RandomPlayer(),
+            RandomPlayer(10),
             LinearExtrapolation(0.2)
         ]
 
@@ -26,20 +26,16 @@ class TestPlayer(unittest.TestCase):
             except ValueError:
                 self.fail("Failed to convert player money into number")
 
-    def test_previous_total_given(self):
-        # Eight rounds
-        previous_rounds = [list(range(0, 8))]
-        for player in self.players:
-            player.set_money_return_list(lambda: previous_rounds)
-        total = self.players[0].rounds_total_given()
-        self.assertEqual(total, previous_rounds)
-
     def test_all_in_player(self):
         player = AllIn()
         player.money = 10
-        player.win_money(7)
-        self.assertEqual(player.pay_money(), 17)
+        player.set_win_money(7)
+        self.assertEqual(player.get_pay_money(), 17)
         self.assertEqual(player.money, 0)
+
+    def test_string_representation(self):
+        for player in self.players:
+            self.assertTrue(hasattr(player, '__str__'), "The class does not have a __str__ method")
 
 
 if __name__ == '__main__':

@@ -28,14 +28,14 @@ class Player:
         """
         self.get_game = get_game
 
-    def win_money(self, win: float):
+    def set_win_money(self, win: float):
         """
         Increases the money of the player by the amount won.
         :param win: float of the winning amount in this round
         """
         self.money += win
 
-    def pay_money(self) -> float:
+    def get_pay_money(self) -> float:
         """
         Method to be used to get the money of the next round.
         :return: the amount of the money given to the bank
@@ -43,12 +43,13 @@ class Player:
         desired_pay_money = self.ask_desired_pay_money()
 
         # Protect the players to give more away than what they have
+        pay_money = desired_pay_money
         if desired_pay_money > self.money:
-            desired_pay_money = self.money
+            pay_money = self.money
 
-        self.money_paid_list.append(desired_pay_money)
-        self.money -= desired_pay_money
-        return desired_pay_money
+        self.money_paid_list.append(pay_money)
+        self.money -= pay_money
+        return pay_money
 
     def ask_desired_pay_money(self) -> float:
         """
