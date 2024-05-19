@@ -82,14 +82,14 @@ class PartOfReturn(Player):
      All next rounds then he gives a percentage of his returned money of the
      last round (part_of_return)"""
 
-    def __init__(self, part_of_starting, part_of_return):
+    def __init__(self, part_of_starting, part_of_return, starting_money=STARTING_MONEY):
         """
         Constructor method of this player type
         :param part_of_starting: float between 0..1 to calculate what percentage of start money should be given
         :param part_of_return: float between 0..1 to calculate what percentage should be given
         from the return of the last round
         """
-        super().__init__()
+        super().__init__(starting_money=starting_money)
         self.part_of_starting = part_of_starting
         self.part_of_return = part_of_return
 
@@ -116,14 +116,14 @@ class PartOfOthers(Player):
      All next rounds he gives a percentage of the values the other players
      (without him) gave the last round"""
 
-    def __init__(self, part_of_starting, part_of_others):
+    def __init__(self, part_of_starting, part_of_others, starting_money=STARTING_MONEY):
         """
         Constructor method of this player type
         :param part_of_starting: float between 0..1 to calculate what percentage of start money should be given
         :param part_of_others: float between 0..1 to calculate what percentage should be given
          of the others input the last round
         """
-        super().__init__()
+        super().__init__(starting_money=starting_money)
         self.part_of_starting = part_of_starting
         self.part_of_others = part_of_others
 
@@ -148,12 +148,12 @@ class PartOfOthers(Player):
 class RandomPlayer(Player):
     """This player always just gives a random amount from his money in"""
 
-    def __init__(self, seed):
+    def __init__(self, seed, starting_money=STARTING_MONEY):
         """
         Constructor method of the random player
         :param seed: seed for calculating random values
         """
-        super().__init__()
+        super().__init__(starting_money=starting_money)
         self.seed = seed
         self.random_gen = random.Random(seed)
 
@@ -176,12 +176,12 @@ class LinearExtrapolation(Player):
     the next round.
     All rounds are weighted with an exponential function into the past."""
 
-    def __init__(self, part_of_starting):
+    def __init__(self, part_of_starting, starting_money=STARTING_MONEY):
         """
         Constructor method of this player type
         :param part_of_starting: float between 0..1 to calculate what percentage of start money should be given
         """
-        super().__init__()
+        super().__init__(starting_money=starting_money)
         self.part_of_starting = part_of_starting
 
     def __str__(self):

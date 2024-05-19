@@ -28,16 +28,30 @@ class TestGame(unittest.TestCase):
             self.assertEqual(participant.money, 0)
 
     def test_no_money_creation(self):
-        noMoneyCreationGame = NoMoneyCreation(self.game.players)
-        players = [player.AllIn(), player.AllIn(), player.AllIn(), player.AllIn(), player.AllIn()]
-        for participant in players:
-            participant.money = 10.
-        noMoneyCreationGame.num_rounds = 7
+        num_player = 5
+        starting_money = 10.
+        players = [player.AllIn(starting_money=10.) for _ in range(num_player)]
+        noMoneyCreationGame = NoMoneyCreation(players, num_rounds=7)
         noMoneyCreationGame.play()
         money_total = 0.
         for participant in players:
             money_total += participant.money
-        self.assertAlmostEqual(money_total, 10. * 5)
+        self.assertAlmostEqual(money_total, starting_money * num_player)
+
+    def test_multiplication_by_one(self):
+        num_player = 5
+        starting_money = 10.
+        num_rounds = 7
+
+        players1 = [player.RandomPlayer(seed=i, starting_money=starting_money) for i in range(num_player)]
+        game1 = NoMoneyCreation(players1, num_rounds=num_rounds)
+        game1.play()
+
+        players2 = [player.RandomPlayer(seed=i, starting_money=starting_money) for i in range(num_player)]
+        game2 = MultiplicationGame(players2, num_rounds=num_rounds, money_multiplier=1)
+        game2.play()
+
+        self.assertEqual(game1.get_states(), game2.get_states())
 
 
 if __name__ == '__main__':

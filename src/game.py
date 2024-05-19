@@ -73,7 +73,32 @@ class Game:
 
 class NoMoneyCreation(Game):
     """This type of game doesn't add money to the game, just splitting it up each time"""
+    
+    def __str__(self):
+        """String representation of this game"""
+        return "NoMoneyCreation"
 
     def calc_return_money(self) -> float:
+        """Method for calculating the return money by just splitting the total amount given
+        :return: float of how much each player gets back"""
         total_money_given = sum(self._money_given_array[-1])
+        return total_money_given / self.get_num_players()
+
+
+class MultiplicationGame(Game):
+    """This type of game multiplies the total amount of money given by the players by a certain amount"""
+    
+    def __str__(self):
+        """String representation of this game"""
+        return "SimpleMultiplication ({:.2f})".format(self.money_multiplier)
+    
+    def __init__(self, players=None, num_rounds=NUM_ROUNDS, money_multiplier=1):
+        """Constructor method for this class. If no multiplier or 1 is given it equals NoMoneyCreation"""
+        super().__init__(players=players, num_rounds=num_rounds)
+        self.money_multiplier = money_multiplier
+    
+    def calc_return_money(self) -> float:
+        """Method for calculating the return money by splitting the total amount multiplied by the given multiplier
+        :return: float of how much each player gets back"""
+        total_money_given = sum(self._money_given_array[-1]) * self.money_multiplier
         return total_money_given / self.get_num_players()
