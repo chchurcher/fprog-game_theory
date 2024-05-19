@@ -1,28 +1,30 @@
-from main import NUM_PLAYERS, NUM_ROUNDS, INCREMENTAL_MULTIPICATOR, STARTING_MONEY
 from random import random
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from typing import Callable
+from game import Game
+
+STARTING_MONEY = 10.
 
 
 class Player:
     """Parent class to represent a player with only the information he has in his point of view.
     Should be inherited"""
 
-    def __init__(self, strategy):
+    def __init__(self, strategy, starting_money=STARTING_MONEY):
         self.strategy = strategy
-        self.money = STARTING_MONEY
+        self.money = starting_money
         self.giveaways = []
-        self.money_return_list = lambda: []
+        self.get_game: Callable[[None], Game] = lambda: Game()
 
-    def set_money_return_list(self, money_return_list):
+    def set_game_getter(self, get_game):
         """
         This method is used to give a function to the Player class to get the information
          what everybody got in the last round back.
 
-        :param money_return_list: function to return a list of the money a player
-         got in the last rounds.
+        :param get_game: function to return the game this player is playing got in the last rounds.
         """
-        self.money_return_list = money_return_list
+        self.get_game = get_game
 
     def win_money(self, win):
         """
@@ -52,14 +54,6 @@ class Player:
         Abstract method to be implemented by child classes to calculate the next rounds with their strategies.
         """
         pass
-
-    def rounds_total_given(self) -> []:
-        """
-        Calculates the total given amounts of all the previous rounds
-
-        :return: float list with the number of total given
-        """
-        return self.money_return_list()
 
 
 class AllIn(Player):
@@ -109,7 +103,8 @@ class PartOfReturn(Player):
         if len(self.giveaways) == 0:
             return self.money * self.part_of_starting
         else:
-            return self.money_return_list()[:-1] * self.part_of_return
+            game = self.get_game()
+            return game.money_return_list[-1] * self.part_of_return
 
 
 class PartOfOthers(Player):
@@ -140,8 +135,9 @@ class PartOfOthers(Player):
         if len(self.giveaways) == 0:
             return self.money * self.part_of_starting
         else:
-            previous_others_given = self.rounds_total_given()[-1] - self.giveaways[-1]
-            return previous_others_given * self.part_of_others / (NUM_PLAYERS - 1)
+            game = self.get_game()
+            previous_others_given = game.rounds_total_given()[-1] - self.giveaways[-1]
+            return previous_others_given * self.part_of_others / (game.get_num_players() - 1)
 
 
 class RandomPlayer(Player):
