@@ -69,3 +69,11 @@ class Game:
         """Abstract method for calculating the return money on different methods
         :return: float of how much each player should get back"""
         pass
+
+
+class NoMoneyCreation(Game):
+    """This type of game doesn't add money to the game, just splitting it up each time"""
+
+    def calc_return_money(self) -> float:
+        total_money_given = sum(self._money_given_array[-1])
+        return total_money_given / self.get_num_players()
