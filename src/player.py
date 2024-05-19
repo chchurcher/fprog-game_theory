@@ -73,11 +73,35 @@ class AllIn(Player):
 
     def ask_desired_pay_money(self):
         """
-        Implementation of the pay_desire method. It is called to calculate the money which is
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
         then given into the envelope
         :return: float of money that wished to be given away
         """
         return self.money
+
+
+class FixedPart(Player):
+    """This player always gives a fixed percentage of his money"""
+
+    def __init__(self, part_to_give, starting_money=STARTING_MONEY):
+        """
+        Constructor method of this player type
+        :param part_to_give: float between 0..1 to calculate what percentage of money should be given
+        """
+        super().__init__(starting_money=starting_money)
+        self.part_to_give = part_to_give
+
+    def __str__(self):
+        """String representation of this player"""
+        return "FixedPart ({:.2f})".format(self.part_to_give)
+
+    def ask_desired_pay_money(self):
+        """
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
+        then given into the envelope
+        :return: float of money that wished to be given away
+        """
+        return self.money * self.part_to_give
 
 
 class PartOfReturn(Player):
@@ -99,11 +123,11 @@ class PartOfReturn(Player):
 
     def __str__(self):
         """String representation of this player"""
-        return "PartOfReturn ({:.2f}|{:.2f}}".format(self.part_of_starting, self.part_of_return)
+        return "PartOfReturn ({:.2f}|{:.2f})".format(self.part_of_starting, self.part_of_return)
 
     def ask_desired_pay_money(self):
         """
-        Implementation of the pay_desire method. It is called to calculate the money which is
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
         then given into the envelope
         :return: float of money that wished to be given away
         """
@@ -133,11 +157,11 @@ class PartOfOthers(Player):
 
     def __str__(self):
         """String representation of this player"""
-        return "PartOfOthers ({:.2f}|{:.2f}}".format(self.part_of_starting, self.part_of_others)
+        return "PartOfOthers ({:.2f}|{:.2f})".format(self.part_of_starting, self.part_of_others)
 
     def ask_desired_pay_money(self):
         """
-        Implementation of the pay_desire method. It is called to calculate the money which is
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
         then given into the envelope
         :return: float of money that wished to be given away
         """
@@ -167,7 +191,7 @@ class RandomPlayer(Player):
 
     def ask_desired_pay_money(self):
         """
-        Implementation of the pay_desire method. It is called to calculate the money which is
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
         then given into the envelope
         :return: float of money that wished to be given away
         """
@@ -194,7 +218,7 @@ class LinearExtrapolation(Player):
 
     def ask_desired_pay_money(self):
         """
-        Implementation of the pay_desire method. It is called to calculate the money which is
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
         then given into the envelope
         :return: float of money that wished to be given away
         """

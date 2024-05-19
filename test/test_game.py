@@ -70,10 +70,24 @@ class TestGame(unittest.TestCase):
 
         game1 = MultiplicationGame(self.allInPlayers, num_rounds=num_rounds, money_multiplier=2.)
         game1.play()
+        print(game1.get_states())
 
         sum_real = sum(game1.get_states()[-1])
         sum_expected = self.num_players * player.STARTING_MONEY * 2**num_rounds
         self.assertAlmostEqual(sum_real, sum_expected)
+
+    def test_tent_to_equal(self):
+        num_rounds = 100
+        players = [player.FixedPart(part_to_give=0.5, starting_money=10**i)
+                   for i in range(self.num_players)]
+        game1 = NoMoneyCreation(players, num_rounds=num_rounds)
+        game1.play()
+        print(game1.get_states())
+
+        total_starting_money = sum([10**i for i in range(self.num_players)])
+        mean_starting_money = total_starting_money / self.num_players
+        self.assertAlmostEqual(mean_starting_money, players[0].money)
+        self.assertAlmostEqual(mean_starting_money, players[-1].money)
 
 
 if __name__ == '__main__':
