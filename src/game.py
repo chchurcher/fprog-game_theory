@@ -158,8 +158,8 @@ class LinearFunctionByTotal(Game):
         total_money_left = sum([player.money for player in self.players])
         total_money_given = sum(self._money_given_array[-1])
 
-        if total_money_left + total_money_left < 1E-6:
-            total_money_left = 0.5
-        multiplier = total_money_given / (total_money_given + total_money_left)
+        if total_money_given + total_money_left < 1E-6:
+            total_money_left = 0.1
+        multiplier = total_money_given / (total_money_given + total_money_left) * 2.
         total_money_given = sum(self._money_given_array[-1]) * multiplier
         return total_money_given / self.get_num_players()

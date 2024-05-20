@@ -98,6 +98,21 @@ class TestGame(unittest.TestCase):
         print(game1.get_states())
         self.assertLess(game1.players[-1].money, 1.)
 
+    def test_lfbt_all_in(self):
+        num_rounds = 5
+
+        game1 = LinearFunctionByTotal(self.allInPlayers, num_rounds=num_rounds)
+        game1.play()
+        print(game1.get_states())
+
+        players = [player.FixedPart(part_to_give=1., starting_money=player.STARTING_MONEY)
+                   for _ in range(self.num_players)]
+        game2 = MultiplicationGame(players, num_rounds=num_rounds, money_multiplier=2.)
+        game2.play()
+        print(game2.get_states())
+
+        self.assertEqual(game1.get_states(), game2.get_states())
+
 
 if __name__ == '__main__':
     unittest.main()
