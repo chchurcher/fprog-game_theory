@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
 import random
-from sklearn.linear_model import LinearRegression
 import numpy as np
 from typing import Callable
 from game import Game
-from game import START_ROUND
 
 STARTING_MONEY = 10.
 random.seed(100)
@@ -25,14 +23,15 @@ class Player(ABC):
         pass
 
     def clear(self):
+        """Clears all variables changing during a game"""
         self.money = self.starting_money
         self.money_paid_list = []
         self.get_game = None
 
     def set_game_getter(self, get_game: Callable[[None], Game]):
         """
-        This method is used to give a function to the Player class to get information about the game
-        :param get_game: function to return the game this instance is playing
+        This method is used to give a function to the Player class to get information about the played_game
+        :param get_game: function to return the played_game this instance is playing
         """
         self.get_game = get_game
 
@@ -75,7 +74,7 @@ class AllIn(Player):
 
     def __str__(self):
         """String representation of this player"""
-        return self.__name__
+        return "AllIn"
 
     def ask_desired_pay_money(self):
         """
@@ -138,10 +137,10 @@ class PartOfReturn(Player):
         :return: float of money that wished to be given away
         """
         game = self.get_game()
-        if game.current_round == START_ROUND:
+        if game.current_round == 0:
             return self.money * self.part_of_starting
         else:
-            return game.money_return_list[-1] * self.part_of_return
+            return game.get_money_returned_list()[-1] * self.part_of_return
 
 
 class PartOfOthers(Player):
@@ -172,7 +171,7 @@ class PartOfOthers(Player):
         :return: float of money that wished to be given away
         """
         game = self.get_game()
-        if game.current_round == START_ROUND:
+        if game.current_round == 0:
             return self.money * self.part_of_starting
         else:
             previous_others_given = game.get_money_given_in_total_list()[-1] - self.money_paid_list[-1]
@@ -220,7 +219,7 @@ class LinearExtrapolation(Player):
 
     def __str__(self):
         """String representation of this player"""
-        return "LinearExtrapolation ({:d})".format(self.part_of_starting)
+        return "LinearExtrapolation ({:.2f})".format(self.part_of_starting)
 
     def ask_desired_pay_money(self):
         """
@@ -229,18 +228,22 @@ class LinearExtrapolation(Player):
         :return: float of money that wished to be given away
         """
         game = self.get_game()
-        if game.current_round == START_ROUND:
+        if game.current_round == 0:
             return self.money * self.part_of_starting
+        elif game.current_round == 1:
+            others_given = game.get_money_given_in_total_list()[0] - self.money_paid_list[0]
+            return others_given / (game.get_num_players() - 1)
         else:
-            previous_others_given = game.get_money_given_in_total_list() - self.money_paid_list
-            mean_others_given = previous_others_given / (game.get_num_players() - 1)
+            total_given = np.asarray(game.get_money_given_in_total_list(), dtype='float64')
+            self_given = np.asarray(self.money_paid_list, dtype='float64')
+            others_given = np.subtract(total_given, self_given)
+            num_played_rounds = np.shape(others_given)[-1]
+            mean_others_given = others_given / (game.get_num_players() - 1)
 
-            num_rounds = len(previous_others_given)
-            model = LinearRegression()
-            x_data = [i for i in range(num_rounds)]
+            x_data = np.arange(num_played_rounds)
             weight = np.exp(x_data)
-            model.fit(x_data, mean_others_given, weight)
-            return model.predict(num_rounds)
+            slope, intercept = np.polyfit(x_data, mean_others_given, deg=1, w=weight)
+            return slope * num_played_rounds + intercept
 
 
 class RepetitivePattern(Player):
@@ -272,6 +275,8 @@ class RepetitivePattern(Player):
 # endregion
 
 
+# region: static functions
 def clear_all_players(players):
     for player in players:
         player.clear()
+# endregion

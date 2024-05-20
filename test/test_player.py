@@ -46,7 +46,7 @@ class TestPlayer(unittest.TestCase):
         player = RepetitivePattern(percentage_list, starting_money=STARTING_MONEY)
         game = MultiplicationGame([player], num_rounds=num_rounds, money_multiplier=money_multiplier)
         game.play()
-        game_stats = game.get_states()
+        game_stats = game.get_states_by_round()
         print("[" + ", ".join([f"{round_stats[0]:.1f}" for round_stats in game_stats]) + "]")
 
         final_money = STARTING_MONEY

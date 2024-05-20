@@ -1,16 +1,15 @@
 from abc import ABC, abstractmethod
 
 NUM_ROUNDS = 10
-START_ROUND = 0
 
 
 class Game(ABC):
-    """This class handles and executes one simulation of one game."""
+    """This class handles and executes one simulation of one played_game."""
 
     def __init__(self, players=None, num_rounds=NUM_ROUNDS):
         """
-        Constructor method of one game
-        :param players: list with the different players playing that game
+        Constructor method of one played_game
+        :param players: list with the different players playing that played_game
         :param num_rounds: integer with numer of rounds that should be played
         """
         if players is None:
@@ -21,19 +20,19 @@ class Game(ABC):
             participant.set_game_getter(lambda: self)
 
         self._money_given_array = []  # array consisting of inputted money of players in previous rounds
-        self.money_return_list = []  # list with money a player got back in previous rounds
+        self._money_return_list = []  # list with money a player got back in previous rounds
         self.num_rounds = num_rounds
         self.current_round = 0
 
-        # Calculate the stats at the beginning of the game
+        # Calculate the stats at the beginning of the played_game
         money_starting_stats = []
         for participant in players:
             money_starting_stats.append(participant.money)
         self._money_stats = [money_starting_stats]
 
     def play(self):
-        """This method begins the simulation of the game"""
-        for i in range(START_ROUND, START_ROUND + self.num_rounds):
+        """This method begins the simulation of the played_game"""
+        for i in range(self.num_rounds):
             self.current_round = i
             self.make_round()
 
@@ -48,17 +47,22 @@ class Game(ABC):
         self._money_given_array.append(current_money_given_list)
 
         money_return = self.calc_return_money()
-        self.money_return_list = money_return
+        self._money_return_list.append(money_return)
 
         self._money_stats.append([])
         for player in self.players:
             player.set_win_money(money_return)
             self._money_stats[-1].append(player.money)
 
-    def get_states(self):
+    def get_states_by_round(self):
         """Method the get the money values of the players
-        :return: array with lists containing the money of every player"""
+        :return: array with list for every round containing the money of every player"""
         return self._money_stats
+
+    def get_states_by_player(self):
+        """Method the get the money values of the players
+        :return: array with list for every player containing the money in each round"""
+        return [[r[p] for r in self._money_stats] for p in range(self.get_num_players())]
 
     def get_num_players(self):
         """Getter method for getting the number of player in this round
@@ -70,6 +74,11 @@ class Game(ABC):
         :return: list with float of total money inputted"""
         return [sum(money_given_round) for money_given_round in self._money_given_array]
 
+    def get_money_returned_list(self):
+        """Getter method for getting the _money_return_list
+        :return: list with float of money returned each round"""
+        return self._money_return_list
+
     @abstractmethod
     def calc_return_money(self) -> float:
         """Abstract method for calculating the return money on different methods
@@ -78,10 +87,10 @@ class Game(ABC):
 
 
 class NoMoneyCreation(Game):
-    """This type of game doesn't add money to the game, just splitting it up each time"""
+    """This type of played_game doesn't add money to the played_game, just splitting it up each time"""
     
     def __str__(self):
-        """String representation of this game"""
+        """String representation of this played_game"""
         return "NoMoneyCreation"
 
     def calc_return_money(self) -> float:
@@ -92,10 +101,10 @@ class NoMoneyCreation(Game):
 
 
 class MultiplicationGame(Game):
-    """This type of game multiplies the total amount of money given by the players by a certain amount"""
+    """This type of played_game multiplies the total amount of money given by the players by a certain amount"""
     
     def __str__(self):
-        """String representation of this game"""
+        """String representation of this played_game"""
         return "SimpleMultiplication ({:.2f})".format(self.money_multiplier)
     
     def __init__(self, players=None, num_rounds=NUM_ROUNDS, money_multiplier=1.):
@@ -111,10 +120,10 @@ class MultiplicationGame(Game):
 
 
 class LinearFunctionByPlayer(Game):
-    """This game uses as multiplier the doubled mean percentage of the individual given money"""
+    """This played_game uses as multiplier the doubled mean percentage of the individual given money"""
 
     def __str__(self):
-        """String representation of this game"""
+        """String representation of this played_game"""
         return "LinearFunctionByPlayer"
 
     def calc_return_money(self) -> float:
@@ -141,10 +150,10 @@ class LinearFunctionByPlayer(Game):
 
 
 class LinearFunctionByTotal(Game):
-    """This game uses as multiplier the doubled percentage of the total money given"""
+    """This played_game uses as multiplier the doubled percentage of the total money given"""
 
     def __str__(self):
-        """String representation of this game"""
+        """String representation of this played_game"""
         return "LinearFunctionByTotal"
 
     def calc_return_money(self) -> float:

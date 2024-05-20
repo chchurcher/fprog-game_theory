@@ -22,7 +22,7 @@ class TestGame(unittest.TestCase):
         game = NoMoneyCreation(self.allInPlayers, num_rounds=7)
         game.current_round = 2
         game._money_given_array = [[player.STARTING_MONEY] * self.num_players] * game.current_round
-        game.money_return_list = [player.STARTING_MONEY] * game.current_round
+        game._money_return_list = [player.STARTING_MONEY] * game.current_round
         game._money_stats = [[player.STARTING_MONEY] * self.num_players] * (game.current_round + 1)
         self.allInGameSecondRound = game
 
@@ -63,16 +63,16 @@ class TestGame(unittest.TestCase):
         game2 = MultiplicationGame(players2, num_rounds=num_rounds, money_multiplier=1.)
         game2.play()
 
-        self.assertEqual(game1.get_states(), game2.get_states())
+        self.assertEqual(game1.get_states_by_round(), game2.get_states_by_round())
 
     def test_doubling_game(self):
         num_rounds = 7
 
         game1 = MultiplicationGame(self.allInPlayers, num_rounds=num_rounds, money_multiplier=2.)
         game1.play()
-        print(game1.get_states())
+        print(game1.get_states_by_round())
 
-        sum_real = sum(game1.get_states()[-1])
+        sum_real = sum(game1.get_states_by_round()[-1])
         sum_expected = self.num_players * player.STARTING_MONEY * 2**num_rounds
         self.assertAlmostEqual(sum_real, sum_expected)
 
@@ -82,7 +82,7 @@ class TestGame(unittest.TestCase):
                    for i in range(self.num_players)]
         game1 = NoMoneyCreation(players, num_rounds=num_rounds)
         game1.play()
-        print(game1.get_states())
+        print(game1.get_states_by_round())
 
         total_starting_money = sum([10**i for i in range(self.num_players)])
         mean_starting_money = total_starting_money / self.num_players
@@ -95,7 +95,7 @@ class TestGame(unittest.TestCase):
                    for i in range(self.num_players)]
         game1 = LinearFunctionByPlayer(players, num_rounds=num_rounds)
         game1.play()
-        print(game1.get_states())
+        print(game1.get_states_by_round())
         self.assertLess(game1.players[-1].money, 1.)
 
     def test_lfbt_all_in(self):
@@ -103,15 +103,15 @@ class TestGame(unittest.TestCase):
 
         game1 = LinearFunctionByTotal(self.allInPlayers, num_rounds=num_rounds)
         game1.play()
-        print(game1.get_states())
+        print(game1.get_states_by_round())
 
         players = [player.FixedPart(part_to_give=1., starting_money=player.STARTING_MONEY)
                    for _ in range(self.num_players)]
         game2 = MultiplicationGame(players, num_rounds=num_rounds, money_multiplier=2.)
         game2.play()
-        print(game2.get_states())
+        print(game2.get_states_by_round())
 
-        self.assertEqual(game1.get_states(), game2.get_states())
+        self.assertEqual(game1.get_states_by_round(), game2.get_states_by_round())
 
 
 if __name__ == '__main__':
