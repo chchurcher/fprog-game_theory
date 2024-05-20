@@ -1,6 +1,6 @@
 import unittest
 from src.player import *
-from src.game import NoMoneyCreation
+from src.game import NoMoneyCreation, MultiplicationGame
 
 
 class TestPlayer(unittest.TestCase):
@@ -38,6 +38,25 @@ class TestPlayer(unittest.TestCase):
     def test_string_representation(self):
         for player in self.players:
             self.assertTrue(hasattr(player, '__str__'), "The class does not have a __str__ method")
+
+    def test_repetive_pattern_player(self):
+        percentage_list = [0.2, 0.5, 0., 1.]
+        money_multiplier = 2.
+        num_rounds = 12
+        player = RepetitivePattern(percentage_list, starting_money=STARTING_MONEY)
+        game = MultiplicationGame([player], num_rounds=num_rounds, money_multiplier=money_multiplier)
+        game.play()
+        game_stats = game.get_states()
+        print("[" + ", ".join([f"{round_stats[0]:.1f}" for round_stats in game_stats]) + "]")
+
+        final_money = STARTING_MONEY
+        print("[", end="")
+        for i in range(num_rounds):
+            print(final_money, end=", ")
+            final_money += percentage_list[i % len(percentage_list)] * final_money
+        print(str(final_money) + "]")
+
+        self.assertAlmostEqual(game_stats[-1][0], final_money)
 
 
 if __name__ == '__main__':

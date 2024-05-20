@@ -235,3 +235,31 @@ class LinearExtrapolation(Player):
             weight = np.exp(x_data)
             model.fit(x_data, mean_others_given, weight)
             return model.predict(num_rounds)
+
+
+class RepetitivePattern(Player):
+    """The RepetitivePattern player uses a pattern repetivly of which he calculates the amount to give"""
+
+    def __init__(self, percentage_list, starting_money=STARTING_MONEY):
+        """
+        Constructor method of this player type
+        :param percentage_list: list of floats between 0..1 to calculate what percentage should be given.
+        Each round the next entry is used
+        """
+        super().__init__(starting_money=starting_money)
+        self.percentage_list = percentage_list
+
+    def __str__(self):
+        """String representation of this player"""
+        formatted_list = [f"{percentage:.2f}" for percentage in self.percentage_list]
+        formatted_str = ", ".join(formatted_list)
+        return "RepetitivePattern ({:s})".format(formatted_str)
+
+    def ask_desired_pay_money(self):
+        """
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
+        then given into the envelope
+        :return: float of money that wished to be given away
+        """
+        game = self.get_game()
+        return self.money * self.percentage_list[game.current_round % len(self.percentage_list)]
