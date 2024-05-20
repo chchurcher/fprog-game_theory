@@ -15,14 +15,19 @@ class Player(ABC):
     Should be inherited"""
 
     def __init__(self, starting_money=STARTING_MONEY):
+        self.starting_money = starting_money
         self.money = starting_money
         self.money_paid_list = []
-        # self.get_game: Callable[[None], Game] = None
         self.get_game = None
 
     @abstractmethod
     def __str__(self):
         pass
+
+    def clear(self):
+        self.money = self.starting_money
+        self.money_paid_list = []
+        self.get_game = None
 
     def set_game_getter(self, get_game: Callable[[None], Game]):
         """
@@ -64,6 +69,7 @@ class Player(ABC):
         pass
 
 
+# region: different player types
 class AllIn(Player):
     """This player always gives all his money in the envelope"""
 
@@ -238,7 +244,7 @@ class LinearExtrapolation(Player):
 
 
 class RepetitivePattern(Player):
-    """The RepetitivePattern player uses a pattern repetivly of which he calculates the amount to give"""
+    """The RepetitivePattern player uses a pattern repetitively of which he calculates the amount to give"""
 
     def __init__(self, percentage_list, starting_money=STARTING_MONEY):
         """
@@ -263,3 +269,9 @@ class RepetitivePattern(Player):
         """
         game = self.get_game()
         return self.money * self.percentage_list[game.current_round % len(self.percentage_list)]
+# endregion
+
+
+def clear_all_players(players):
+    for player in players:
+        player.clear()
