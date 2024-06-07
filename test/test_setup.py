@@ -27,3 +27,16 @@ class TestSetup(unittest.TestCase):
         self.setup1.init_combinations()
         expected = len(list(self.setup1.combinations))
         self.assertEqual(actual, expected)
+
+    def test_init_combinations(self):
+        self.setup1.set_player_per_game(4)
+        self.setup1.init_combinations()
+        actual = list(self.setup1.combinations)
+        expected = [
+            (1, 2, 3, 4),
+            (0, 2, 3, 4),
+            (0, 1, 3, 4),
+            (0, 1, 2, 4),
+            (0, 1, 2, 3)
+        ]
+        self.assertEqual(sorted(actual), sorted(expected))
