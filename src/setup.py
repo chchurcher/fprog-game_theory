@@ -21,17 +21,21 @@ class Setup:
         self.combinations = []
         self.current_game_index = 0
 
-    def set_player(self, players):
-        """Used to set the :param players for this setup"""
+    # region: creator methods
+    def set_players(self, players):
+        """Used to set the players for this setup
+        :param players: list with all players in this setup"""
         self.players = players
 
     def set_game_creator(self, game_creator):
-        """Sets a lambda expression to create a new game with players :param game_creator(players) """
+        """Sets a lambda expression to create a new game with players
+        :param game_creator: lambda expression with argument players_list"""
         self.new_game = game_creator
 
     def set_player_per_game(self, player_per_game):
         """Sets the number of player that should play against each other in one game"""
         self.player_per_game = player_per_game
+    # endregion
 
     def get_num_games(self):
         """This method returns the total number of games played in this setup. differs by num of players
@@ -40,7 +44,7 @@ class Setup:
             return math.comb(len(self.players), self.player_per_game)
         return 0
 
-    def set_combinations(self):
+    def init_combinations(self):
         """This method should be called before the first game is simulated. A combination of all
         index lists that should be simulated is created depending on simulation_type"""
         if self.simulation_type == 'all':
@@ -62,6 +66,7 @@ class Setup:
 
     def start(self):
         """Function to start all simulations of all specified game combinations"""
+        self.init_combinations()
         for i in range(self.get_num_games()):
             self.current_game_index = i
             self.make_game()
