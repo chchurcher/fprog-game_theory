@@ -1,7 +1,5 @@
-import player
-import game
-import numpy as np
 import math
+import itertools
 
 
 class Setup:
@@ -20,6 +18,8 @@ class Setup:
         self.new_game = None
         self.player_per_game = 0
         self.player_outcomes = []
+        self.combinations = []
+        self.current_game_index = 0
 
     def set_player(self, players):
         """Used to set the :param players for this setup"""
@@ -39,3 +39,35 @@ class Setup:
         if self.simulation_type == 'all':
             return math.comb(len(self.players), self.player_per_game)
         return 0
+
+    def set_combinations(self):
+        """This method should be called before the first game is simulated. A combination of all
+        index lists that should be simulated is created depending on simulation_type"""
+        if self.simulation_type == 'all':
+            player_indices = [i for i in range(len(self.players))]
+            self.combinations = itertools.combinations(player_indices, self.player_per_game)
+        return 0
+
+    def get_player_subgroup(self, combination_index):
+        """Returns a subgroup of the players for one specific game simulation
+        :param combination_index: index of the combination list that should be returned
+        :return: a list of players"""
+        player_subgroup = []
+        player_index_list = self.combinations[combination_index]
+        for i in player_index_list:
+            pl = self.players[i]
+            pl.clear()
+            player_subgroup.append(pl)
+        return player_subgroup
+
+    def start(self):
+        """Function to start all simulations of all specified game combinations"""
+        for i in range(self.get_num_games()):
+            self.current_game_index = i
+            self.make_game()
+
+    def make_game(self):
+        """Simulates on distinct game in this setup"""
+        player_subgroup = self.get_player_subgroup(self.current_game_index)
+        current_game = self.new_game(player_subgroup)
+        current_game.play()
