@@ -1,5 +1,7 @@
 import itertools
 import matplotlib.pyplot as plt
+from statistics import median
+from matplotlib.patches import Patch
 
 
 class Setup:
@@ -88,7 +90,7 @@ class Setup:
     # region: visualization
     def chart_line_all_rounds(self):
         """Creates a line chart to visualize all rounds"""
-        plt.figure(figsize=(8., 5.))
+        plt.figure(figsize=(8., 6.))
 
         for player_index in range(len(self.players)):
             x_values = [i for i in range(self.num_games) if self.player_outcomes[player_index][i] is not None]
@@ -99,20 +101,47 @@ class Setup:
         x_values = [i for i in range(self.num_games)]
         x_labels = self.player_combinations
         plt.xticks(x_values, x_labels, rotation=90)
-        plt.title("Game simulation of \"{:s}\"".format(self.name))
-        plt.xlabel("Round combination")
+        plt.title("Game outcomes of \"{:s}\"".format(self.name))
+        plt.xlabel("Round combinations")
         plt.ylabel("Outcome Money")
-        plt.subplots_adjust(bottom=0.38)
-        plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.68), ncol=3)
+        plt.subplots_adjust(bottom=0.34)
+        plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.6), ncol=3)
         plt.show()
 
     def chart_pie_outcomes(self):
-        """Creates a pie chart to visualize the total outcome money and the mean outcome per round"""
+        """Creates a pie chart to visualize the max outcome money and the mean outcome per round"""
         # Total, Mean per round
+        fig, axs = plt.subplots(2, 2, figsize=(8, 6))
+
+        data_values = [[item for item in sublist if item is not None] for sublist in self.player_outcomes]
+        labels = [str(self.players[i]) for i in range(len(self.players))]
+
+        mean_outcomes = [sum(outcomes) / len(outcomes) for outcomes in data_values]
+        wedges1, _ = axs[0, 0].pie(mean_outcomes)
+        axs[0, 0].set_title('Mean outcome')
+
+        med_outcomes = [median(outcomes) for outcomes in data_values]
+        axs[0, 1].pie(med_outcomes)
+        axs[0, 1].set_title('Median outcome')
+
+        max_outcomes = [max(outcomes) for outcomes in data_values]
+        axs[1, 0].pie(max_outcomes)
+        axs[1, 0].set_title('Maximum outcome')
+
+        min_outcomes = [max(outcomes) for outcomes in data_values]
+        axs[1, 1].pie(min_outcomes)
+        axs[1, 1].set_title('Minimum outcome')
+
+        legend_colors = [w.get_facecolor() for w in wedges1]
+        handles = [Patch(color=legend_colors[i], label=labels[i]) for i in range(len(labels))]
+        fig.legend(handles=handles, loc='lower center', bbox_to_anchor=(0.5, 0.035), ncols=3)
+        plt.suptitle("Pie charts of \"{:s}\"".format(self.name))
+        plt.subplots_adjust(bottom=0.15)
+        plt.show()
 
     def chart_boxplot(self):
         """Creates a boxplot chart to visualize the outcome quartiles of the player"""
-        plt.figure(figsize=(6.4, 5.))
+        plt.figure(figsize=(8, 6))
 
         data_values = [[item for item in sublist if item is not None] for sublist in self.player_outcomes]
         plt.boxplot(data_values, vert=True, patch_artist=True)
@@ -120,9 +149,9 @@ class Setup:
         x_values = [i for i in range(1, len(self.players) + 1)]
         x_labels = [str(self.players[i]) for i in range(len(self.players))]
         plt.xticks(x_values, x_labels, rotation=30, ha='right')
-        plt.subplots_adjust(bottom=0.35)
+        plt.subplots_adjust(bottom=0.28)
 
-        plt.title("Game simulation of \"{:s}\"".format(self.name))
+        plt.title("Boxplots of \"{:s}\"".format(self.name))
         plt.ylabel("Outcome Money")
         plt.show()
 
