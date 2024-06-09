@@ -80,6 +80,9 @@ class Setup:
         for i in range(self.num_player_per_game):
             player_index = self.player_combinations[self.game_index][i]
             self.player_outcomes[player_index][self.game_index] = final_result[i]
+
+    def player_outcome_without_none(self):
+        return
     # endregion
 
     # region: visualization
@@ -106,5 +109,21 @@ class Setup:
     def chart_pie_outcomes(self):
         """Creates a pie chart to visualize the total outcome money and the mean outcome per round"""
         # Total, Mean per round
+
+    def chart_boxplot(self):
+        """Creates a boxplot chart to visualize the outcome quartiles of the player"""
+        plt.figure(figsize=(6.4, 5.))
+
+        data_values = [[item for item in sublist if item is not None] for sublist in self.player_outcomes]
+        plt.boxplot(data_values, vert=True, patch_artist=True)
+
+        x_values = [i for i in range(1, len(self.players) + 1)]
+        x_labels = [str(self.players[i]) for i in range(len(self.players))]
+        plt.xticks(x_values, x_labels, rotation=30, ha='right')
+        plt.subplots_adjust(bottom=0.35)
+
+        plt.title("Game simulation of \"{:s}\"".format(self.name))
+        plt.ylabel("Outcome Money")
+        plt.show()
 
     # endregion
