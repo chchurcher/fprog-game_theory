@@ -74,6 +74,8 @@ class Setup:
 
     def make_game(self):
         """Simulates on distinct game in this setup"""
+        print('Make game {:d}/{:d}'.format(self.game_index, self.num_games))
+
         player_subgroup = self.get_player_subgroup(self.game_index)
         current_game = self.new_game(player_subgroup)
         current_game.play()
@@ -119,20 +121,20 @@ class Setup:
         mean_outcomes = [sum(outcomes) / len(outcomes) for outcomes in data_values]
         wedges1, _ = axs[0, 0].pie(mean_outcomes)
         axs[0, 0].set_title('Mean outcome')
+        legend_colors = [w.get_facecolor() for w in wedges1]
 
         med_outcomes = [median(outcomes) for outcomes in data_values]
-        axs[0, 1].pie(med_outcomes)
+        axs[0, 1].pie(med_outcomes, colors=legend_colors)
         axs[0, 1].set_title('Median outcome')
 
         max_outcomes = [max(outcomes) for outcomes in data_values]
-        axs[1, 0].pie(max_outcomes)
+        axs[1, 0].pie(max_outcomes, colors=legend_colors)
         axs[1, 0].set_title('Maximum outcome')
 
-        min_outcomes = [max(outcomes) for outcomes in data_values]
-        axs[1, 1].pie(min_outcomes)
+        min_outcomes = [max(min(outcomes), 0.1) for outcomes in data_values]
+        axs[1, 1].pie(min_outcomes, colors=legend_colors)
         axs[1, 1].set_title('Minimum outcome')
 
-        legend_colors = [w.get_facecolor() for w in wedges1]
         handles = [Patch(color=legend_colors[i], label=labels[i]) for i in range(len(labels))]
         fig.legend(handles=handles, loc='lower center', bbox_to_anchor=(0.5, 0.035), ncols=3)
         plt.suptitle("Pie charts of \"{:s}\"".format(self.name))

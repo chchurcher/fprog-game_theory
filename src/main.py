@@ -22,18 +22,20 @@ def visualize_game(played_game):
 
 
 differentPlayers = [
+    player.AllIn(),
     player.FixedPart(0.5),
-    player.FixedPart(0.4),
-    player.FixedPart(1.0),
+    player.PartOfOthers(0.2, 0.8),
+    player.PartOfOthers(0.6, 1.1),
     player.RepetitivePattern([0.5, 0.9, 0.0]),
     player.RandomPlayer(10),
+    player.RandomPlayer(11),
     player.LinearExtrapolation(0.1)
 ]
 
 setup1 = setup.Setup(name='ManyRepetitivePlayers')
 setup1.set_players(differentPlayers)
-setup1.set_game_creator(lambda p: game.NoMoneyCreation(players=p))
-setup1.set_player_per_game(4)
+setup1.set_game_creator(lambda p: game.LinearFunctionByPlayer(players=p))
+setup1.set_player_per_game(2)
 setup1.start()
 setup1.chart_line_all_rounds()
 setup1.chart_boxplot()
