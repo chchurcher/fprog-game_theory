@@ -53,6 +53,7 @@ class Player(ABC):
         pay_money = desired_pay_money
         if desired_pay_money > self.money:
             pay_money = self.money
+        pay_money = max(pay_money, 0)
 
         self.money_paid_list.append(pay_money)
         self.money -= pay_money
