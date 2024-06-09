@@ -1,5 +1,5 @@
-import math
 import itertools
+import matplotlib.pyplot as plt
 
 
 class Setup:
@@ -16,10 +16,12 @@ class Setup:
         self.simulation_type = simulation_type
         self.players = []
         self.new_game = None
-        self.player_per_game = 0
+        self.num_player_per_game = 0
         self.player_outcomes = []
-        self.combinations = []
-        self.current_game_index = 0
+        self.player_combinations = []
+        self.num_games = 0
+        self.game_index = 0
+        self.games = []
 
     # region: creator methods
     def set_players(self, players):
@@ -32,32 +34,27 @@ class Setup:
         :param game_creator: lambda expression with argument players_list"""
         self.new_game = game_creator
 
-    def set_player_per_game(self, player_per_game):
+    def set_player_per_game(self, player_per_game=4):
         """Sets the number of player that should play against each other in one game"""
-        self.player_per_game = player_per_game
+        self.num_player_per_game = player_per_game
     # endregion
 
-    def get_num_games(self):
-        """This method returns the total number of games played in this setup. differs by num of players
-        and the simulation_type"""
-        if self.simulation_type == 'all':
-            return math.comb(len(self.players), self.player_per_game)
-        return 0
-
+    # region: simulation methods
     def init_combinations(self):
         """This method should be called before the first game is simulated. A combination of all
         index lists that should be simulated is created depending on simulation_type"""
         if self.simulation_type == 'all':
             player_indices = [i for i in range(len(self.players))]
-            self.combinations = itertools.combinations(player_indices, self.player_per_game)
-        return 0
+            combinations = itertools.combinations(player_indices, self.num_player_per_game)
+            self.player_combinations = list(combinations)
+            self.num_games = len(self.player_combinations)
 
-    def get_player_subgroup(self, combination_index):
+    def get_player_subgroup(self, game_index):
         """Returns a subgroup of the players for one specific game simulation
-        :param combination_index: index of the combination list that should be returned
+        :param game_index: index of the combination list that should be returned
         :return: a list of players"""
         player_subgroup = []
-        player_index_list = self.combinations[combination_index]
+        player_index_list = self.player_combinations[game_index]
         for i in player_index_list:
             pl = self.players[i]
             pl.clear()
@@ -65,14 +62,49 @@ class Setup:
         return player_subgroup
 
     def start(self):
-        """Function to start all simulations of all specified game combinations"""
+        """Function to start all simulations of all specified game player_combinations"""
         self.init_combinations()
-        for i in range(self.get_num_games()):
-            self.current_game_index = i
+        self.player_outcomes = [[None for _ in range(self.num_games)] for _ in range(len(self.players))]
+        self.games = [None for _ in range(self.num_games)]
+        for i in range(self.num_games):
+            self.game_index = i
             self.make_game()
 
     def make_game(self):
         """Simulates on distinct game in this setup"""
-        player_subgroup = self.get_player_subgroup(self.current_game_index)
+        player_subgroup = self.get_player_subgroup(self.game_index)
         current_game = self.new_game(player_subgroup)
         current_game.play()
+        self.games[self.game_index] = current_game
+        final_result = current_game.get_final_stats()
+        for i in range(self.num_player_per_game):
+            player_index = self.player_combinations[self.game_index][i]
+            self.player_outcomes[player_index][self.game_index] = final_result[i]
+    # endregion
+
+    # region: visualization
+    def chart_line_all_rounds(self):
+        """Creates a line chart to visualize all rounds"""
+        plt.figure(figsize=(8., 5.))
+
+        for player_index in range(len(self.players)):
+            x_values = [i for i in range(self.num_games) if self.player_outcomes[player_index][i] is not None]
+            y_values = list(filter(lambda x: x is not None, self.player_outcomes[player_index]))
+            player_str = '{:d}: {:s}'.format(player_index, str(self.players[player_index]))
+            plt.plot(x_values, y_values, 'x-', label=player_str)
+
+        x_values = [i for i in range(self.num_games)]
+        x_labels = self.player_combinations
+        plt.xticks(x_values, x_labels, rotation=90)
+        plt.title("Game simulation of \"{:s}\"".format(self.name))
+        plt.xlabel("Round combination")
+        plt.ylabel("Outcome Money")
+        plt.subplots_adjust(bottom=0.38)
+        plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.68), ncol=3)
+        plt.show()
+
+    def chart_pie_outcomes(self):
+        """Creates a pie chart to visualize the total outcome money and the mean outcome per round"""
+        # Total, Mean per round
+
+    # endregion

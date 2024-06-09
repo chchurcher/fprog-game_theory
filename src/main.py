@@ -2,6 +2,7 @@ import player
 import game
 import matplotlib.pyplot as plt
 import numpy as np
+import setup
 
 
 def visualize_game(played_game):
@@ -20,7 +21,6 @@ def visualize_game(played_game):
     plt.show()
 
 
-num_rounds = 25
 differentPlayers = [
     player.FixedPart(0.5),
     player.FixedPart(0.4),
@@ -29,6 +29,10 @@ differentPlayers = [
     player.RandomPlayer(10),
     player.LinearExtrapolation(0.1)
 ]
-game1 = game.LinearFunctionByPlayer(differentPlayers, num_rounds=num_rounds)
-game1.play()
-visualize_game(game1)
+
+setup1 = setup.Setup(name='ManyRepetitivePlayers')
+setup1.set_players(differentPlayers)
+setup1.set_game_creator(lambda p: game.NoMoneyCreation(players=p))
+setup1.set_player_per_game(4)
+setup1.start()
+setup1.chart_line_all_rounds()

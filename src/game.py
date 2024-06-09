@@ -64,6 +64,11 @@ class Game(ABC):
         :return: array with list for every player containing the money in each round"""
         return [[r[p] for r in self._money_stats] for p in range(self.get_num_players())]
 
+    def get_final_stats(self):
+        """Method the get the money values of the players in the last round
+        :return: list of money of every player in last round"""
+        return self._money_stats[-1]
+
     def get_num_players(self):
         """Getter method for getting the number of player in this round
         :return: integer with number of player in this round"""

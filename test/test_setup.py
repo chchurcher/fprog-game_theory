@@ -2,6 +2,7 @@ import unittest
 from src.setup import *
 import src.player as player
 import src.game as game
+import math
 
 
 class TestSetup(unittest.TestCase):
@@ -15,7 +16,6 @@ class TestSetup(unittest.TestCase):
         ]
 
         def game_creator(p): return game.NoMoneyCreation(players=p)
-
         setup1 = Setup(name='TestSetup', simulation_type='all')
         setup1.set_players(players)
         setup1.set_player_per_game(3)
@@ -23,15 +23,15 @@ class TestSetup(unittest.TestCase):
         self.setup1 = setup1
 
     def test_num_combinations(self):
-        actual = self.setup1.get_num_games()
+        expected = math.comb(len(self.setup1.players), self.setup1.num_player_per_game)
         self.setup1.init_combinations()
-        expected = len(list(self.setup1.combinations))
+        actual = len(self.setup1.player_combinations)
         self.assertEqual(actual, expected)
 
     def test_init_combinations(self):
         self.setup1.set_player_per_game(4)
         self.setup1.init_combinations()
-        actual = list(self.setup1.combinations)
+        actual = self.setup1.player_combinations
         expected = [
             (1, 2, 3, 4),
             (0, 2, 3, 4),
@@ -40,3 +40,7 @@ class TestSetup(unittest.TestCase):
             (0, 1, 2, 3)
         ]
         self.assertEqual(sorted(actual), sorted(expected))
+
+
+if __name__ == '__main__':
+    unittest.main()
