@@ -273,6 +273,38 @@ class RepetitivePattern(Player):
         """
         game = self.get_game()
         return self.money * self.percentage_list[game.current_round % len(self.percentage_list)]
+
+
+class GrimTrigger(Player):
+    """The GrimTrigger player only cooperates when a certain input trigger is exceeded by others"""
+
+    def __init__(self, trigger_value, starting_money=STARTING_MONEY):
+        """
+        Constructor method of this player type
+        :param trigger_value: value of money that triggers the cooperation
+        """
+        super().__init__(starting_money=starting_money)
+        self.trigger_value = trigger_value
+
+    def __str__(self):
+        """String representation of this player"""
+        return "PartOfOthers ({:.2f})".format(self.trigger_value)
+
+    def ask_desired_pay_money(self):
+        """
+        Implementation of the ask_desired_pay_money method. It is called to calculate the money which is
+        then given into the envelope
+        :return: float of money that wished to be given away
+        """
+        game = self.get_game()
+        if game.current_round == 0:
+            return 0
+        else:
+            previous_others_given = game.get_money_given_in_total_list()[-1] - self.money_paid_list[-1]
+            if previous_others_given > self.trigger_value:
+                return self.money
+            else:
+                return 0
 # endregion
 
 
