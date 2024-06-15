@@ -23,14 +23,17 @@ def visualize_game(played_game):
 
 differentPlayers = [
     player.AllIn(),
-    player.FixedPart(0.5),
-    player.PartOfOthers(0.2, 0.8),
-    player.PartOfOthers(0.6, 1.1),
-    player.RepetitivePattern([0.5, 0.9, 0.0]),
-    player.LinearExtrapolation(0.1)
+    player.FixedPart(0.9),  # SaveUpMyMoney
+    player.PartOfOthers(0.2, 0.8),  # Pessimistic
+    player.PartOfOthers(0.5, 1.0),  # TitForTat
+    player.PartOfOthers(0.8, 1.2),  # Optimistic
+    player.RepetitivePattern([0.8, 1., 1.2, 0.0]),  # Deceit
+    player.LinearExtrapolation(0.5),  # Mathematician
+    player.RandomPlayer(123),
+    player.GrimTrigger(7.5)
 ]
 
-setup1 = setup.Setup(name='ManyRepetitivePlayers')
+setup1 = setup.Setup(name='DuelOfStrategies')
 setup1.set_players(differentPlayers)
 setup1.set_game_creator(lambda p: game.LinearFunctionByTotal(players=p))
 setup1.set_player_per_game(2)

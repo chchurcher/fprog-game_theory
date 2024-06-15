@@ -288,7 +288,7 @@ class GrimTrigger(Player):
 
     def __str__(self):
         """String representation of this player"""
-        return "PartOfOthers ({:.2f})".format(self.trigger_value)
+        return "GrimTrigger ({:.2f})".format(self.trigger_value)
 
     def ask_desired_pay_money(self):
         """
@@ -301,7 +301,7 @@ class GrimTrigger(Player):
             return 0
         else:
             previous_others_given = game.get_money_given_in_total_list()[-1] - self.money_paid_list[-1]
-            if previous_others_given > self.trigger_value:
+            if previous_others_given >= self.trigger_value:
                 return self.money
             else:
                 return 0
