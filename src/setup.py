@@ -2,6 +2,8 @@ import itertools
 import matplotlib.pyplot as plt
 from statistics import median
 from matplotlib.patches import Patch
+import seaborn as sns
+import numpy as np
 
 
 class Setup:
@@ -157,4 +159,28 @@ class Setup:
         plt.ylabel("Outcome Money")
         plt.show()
 
+    def chart_heatmap(self):
+        """Creates a heatmap chart to visualize how the players compete against each other players"""
+
+        # Restricted to two players per game
+        if self.num_player_per_game != 2:
+            return
+
+        plt.figure(figsize=(10, 6))
+
+        # Create a 2D array (matrix) for heatmap
+        heatmap_data = np.empty((len(self.players), len(self.players)))
+        heatmap_data[:] = np.nan
+        for i in range(len(self.player_combinations)):
+            combination = self.player_combinations[i]
+            heatmap_data[combination[0], combination[1]] = np.log1p(self.player_outcomes[combination[0]][i])
+            heatmap_data[combination[1], combination[0]] = np.log1p(self.player_outcomes[combination[1]][i])
+        labels = [f'{str(i)}: {str(self.players[i])}' for i in range(len(self.players))]
+
+        # Plot the heatmap
+        sns.heatmap(heatmap_data, annot=True, cmap='viridis', cbar=False, xticklabels=list(range(len(self.players))),
+                    yticklabels=labels)
+        plt.subplots_adjust(top=0.9, left=0.4)
+        plt.title(self.name)
+        plt.show()
     # endregion
