@@ -117,12 +117,12 @@ Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calcu
 ![Gaussian Chart](/docs/dual_of_strategies/duelOfStrategiesGaussian.png)
 ## Visual Analysis
 
-## Boxplots
+### Boxplots
 
 ![Boxplot with absolute values](/docs/dual_of_strategies/duelOfStrategiesBoxplotAbs.png)
 ![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
 
-## Heatmap
+###  Heatmap
 
 ![Heatmaps of the simulation](/docs/dual_of_strategies/duelOfStrategiesHeatmap.png)
 
