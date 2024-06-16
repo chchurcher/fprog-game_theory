@@ -45,7 +45,7 @@ Interesting is in the boxplot with the log values, that also the median outcome 
 
 ## Conclusion
 
-The **Pessimistic (PartOfOthers 0.2, 0.8)** strategy has the lowest mean outcome, but the highest minimal outcome. Therefor it can be said that low cooperation is a save conservative strategy for loosing money. On the other hand it also has a low probability of winning money. Highly cooperative strategies as **AllIn** can have bad outcome but do perform in the long run better.
+The **Pessimistic (PartOfOthers 0.2, 0.8)** strategy has the lowest mean outcome, but the highest minimal outcome. Therefor it can be said that low cooperation is a save conservative strategy with small probability of loosing money. On the other hand it also has a low probability of winning money. Highly cooperative strategies as **AllIn** can have bad outcome but do perform im most cases better.
 
 
 [Back to Main Documentation](/README.md)
