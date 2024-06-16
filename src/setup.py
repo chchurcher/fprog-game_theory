@@ -184,3 +184,13 @@ class Setup:
         plt.title(self.name)
         plt.show()
     # endregion
+
+    # region: save data
+    def save_player_outcomes(self):
+        labels = [f'{str(i)}: {str(self.players[i])}' for i in range(len(self.players))]
+        with open(self.name + '.txt', 'w') as f:
+            f.write(str(labels))
+            f.write('\n')
+            f.write(str(self.player_outcomes))
+            f.close()
+    # endregion
