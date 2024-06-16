@@ -3,6 +3,7 @@ import math
 
 import matplotlib.pyplot as plt
 from statistics import median
+import scipy.stats as stats
 from matplotlib.patches import Patch
 import seaborn as sns
 import numpy as np
@@ -140,9 +141,9 @@ class Setup:
         axs[1, 1].set_title('Minimum outcome')
 
         handles = [Patch(color=legend_colors[i], label=labels[i]) for i in range(len(labels))]
-        fig.legend(handles=handles, loc='lower center', bbox_to_anchor=(0.5, 0.035), ncols=3)
+        fig.legend(handles=handles, loc='lower center', bbox_to_anchor=(0.5, 0.015), ncols=2)
         plt.suptitle("Pie charts of \"{:s}\"".format(self.name))
-        plt.subplots_adjust(bottom=0.15)
+        plt.subplots_adjust(bottom=0.2)
         plt.show()
 
     def chart_boxplot(self, is_log=False):
@@ -222,6 +223,39 @@ class Setup:
         elif value_type == 'rel_log':
             type_string = 'Log relative outcomes'
         plt.title(self.name + f' ({type_string})')
+        plt.show()
+
+    def chart_gaussian(self, is_log=False):
+        """Creates a line chart to visualize how the players compete against the other players with plotted gaussian of
+        their outcomes"""
+        plt.figure(figsize=(8., 6.))
+
+        outcome_values = np.array(self.player_outcomes, dtype='float64')
+
+        if is_log:
+            outcome_values = np.log1p(outcome_values)
+
+        mean = np.nanmean(outcome_values, axis=1)
+        var = np.nanstd(outcome_values, axis=1)
+        max_value = np.max(mean + 3*var)
+        if is_log:
+            x_values = np.logspace(-1, np.log10(max_value), 100)
+        else:
+            x_values = np.linspace(0, max_value, 100)
+
+        for player_index in range(len(self.players)):
+            normal_distribution = stats.norm.pdf(x_values, mean[player_index], var[player_index])
+            player_str = '{:d}: {:s}'.format(player_index, str(self.players[player_index]))
+            plt.plot(x_values, normal_distribution, '-', label=player_str)
+
+        plt.title("Game outcomes of \"{:s}\"".format(self.name))
+        if is_log:
+            plt.xlabel("Log output money")
+        else:
+            plt.xlabel("Output money")
+        plt.ylabel("Probability")
+        plt.subplots_adjust(bottom=0.34)
+        plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.6), ncol=2)
         plt.show()
     # endregion
 
