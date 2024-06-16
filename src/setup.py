@@ -225,6 +225,28 @@ class Setup:
         plt.title(self.name + f' ({type_string})')
         plt.show()
 
+    def chart_heatmap_outcome(self, is_log=False):
+        """Creates a heatmap chart to visualize the results each game"""
+        plt.figure(figsize=(10, 6))
+
+        # Create a 2D array (matrix) for heatmap
+        heatmap_data = np.array(self.player_outcomes, dtype='float64')
+        if is_log:
+            heatmap_data = np.log(heatmap_data)
+        labels = [f'{str(i)}: {str(self.players[i])}' for i in range(len(self.players))]
+
+        # Plot the heatmap
+        sns.heatmap(heatmap_data, annot=True, cmap='viridis', cbar=False, xticklabels=self.player_combinations,
+                    yticklabels=labels)
+        plt.subplots_adjust(top=0.9, left=0.4)
+        plt.xlabel("Player combination")
+        plt.ylabel("Player outcomes")
+        type_string = "Absolute outcomes"
+        if is_log:
+            type_string = 'Log outcomes'
+        plt.title(self.name + f' ({type_string})')
+        plt.show()
+
     def chart_gaussian(self, is_log=False):
         """Creates a line chart to visualize how the players compete against the other players with plotted gaussian of
         their outcomes"""
