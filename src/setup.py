@@ -227,7 +227,7 @@ class Setup:
 
     def chart_heatmap_outcome(self, is_log=False):
         """Creates a heatmap chart to visualize the results each game"""
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(16, 6))
 
         # Create a 2D array (matrix) for heatmap
         heatmap_data = np.array(self.player_outcomes, dtype='float64')
@@ -238,7 +238,7 @@ class Setup:
         # Plot the heatmap
         sns.heatmap(heatmap_data, annot=True, cmap='viridis', cbar=False, xticklabels=self.player_combinations,
                     yticklabels=labels)
-        plt.subplots_adjust(top=0.9, left=0.4)
+        plt.subplots_adjust(top=0.9, left=0.22, bottom=0.2, right=0.98)
         plt.xlabel("Player combination")
         plt.ylabel("Player outcomes")
         type_string = "Absolute outcomes"

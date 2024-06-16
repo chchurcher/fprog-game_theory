@@ -1,5 +1,5 @@
 [Back to Main Documentation](/README.md)
-# Simulation Findings for Duel of Strategies
+# Simulation Findings for "Duel of Strategies"
 
 This document presents the results of a simulation where various player strategies competed against each other in one-by-one duels. The players in this simulation were:
 

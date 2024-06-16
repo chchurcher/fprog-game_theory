@@ -42,6 +42,12 @@ To run the code, execute the main script in the src directory:
 The simulation results of nine different players competing in games of only two players each can be found [here](/docs/dualOfStrategies.md).
 ![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
 
+### Four each Game
+The simulation results of seven different players competing in games of four players each can be found [here](/docs/fourEachGame.md).
+![Boxplot with log values](/docs/four_each_game/fourEachGameBoxplotLog.png)
+
+### Comparing the above simulations
+High cooperative strategies are considered to be risky, because they can lose the most money. However, in the most cases they perform better than every low cooperative strategy. When for example four players compete in a game, different strategies don't perform better than the **AllIn** strategy. Even though low cooperation can minimize the possible lost, it can be said that trust is valued in the longrun.
 
 ## License
 MIT License

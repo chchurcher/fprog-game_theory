@@ -1,7 +1,7 @@
 [Back to Main Documentation](/README.md)
-# Simulation Findings for Duel of Strategies
+# Simulation Findings for "Four each Game"
 
-This document presents the results of a simulation where various player strategies competed against each other in games of four players. The players in this simulation were the same as in [Duel of Strategies](/docs/dualOfStrategies.md) and are described there more in detail:
+This document presents the results of a simulation where various player strategies competed against each other in games of four players. The players in this simulation are the same as in [Duel of Strategies](/docs/dualOfStrategies.md) without the **Mathematician (LinearExtrapolation 0.5)** and the **RandomPlayer**:
 
 - **AllIn**
 - **SaveUpMyMoney (FixedPart 0.9)**
@@ -9,47 +9,43 @@ This document presents the results of a simulation where various player strategi
 - **TitForTat (PartOfOthers 0.5, 1.0)**
 - **Optimistic (PartOfOthers 0.8, 1.2)**
 - **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])**
-- **Mathematician (LinearExtrapolation 0.5)**
-- **RandomPlayer (seed 123)**
 - **GrimTrigger (7.5)**
 
 
-![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
+![Heatmap with outcomes](/docs/four_each_game/fourEachGameHeatmapOutcomes.png)
 
 ## Game Strategy
 Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calculated by the doubled mean percentage of the individual given money amounts. High cooperation of every player is highly valued whereas low cooperation is punished by even returning less money than the input.
 
+## Cooperation Dynamics
+As described in [Duel of Strategies](/docs/dualOfStrategies.md) the cooperation style of the players can be evaluated as the following.
+- **High Cooperation Strategies**:  **AllIn**, **SaveUpMyMoney (FixedPart 0.9)**, **Optimistic (PartOfOthers 0.8, 1.2)**
+- **Low Cooperation Strategies**: **Pessimistic (PartOfOthers 0.2, 0.8)**, **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])**
+- **Moderate Cooperation Strategies**: **TitForTat (PartOfOthers 0.5, 1.0)**, **GrimTrigger (7.5)**
+- 
 
-## Performance Analysis
-
-### Cooperation Dynamics
-- **High Cooperation Strategies**:  **AllIn**, **SaveUpMyMoney (FixedPart 0.9)** and **Optimistic (PartOfOthers 0.8, 1.2)** generally led to mutual gains and stable interactions. Their cooperative nature made them effective in maintaining positive outcomes over multiple rounds.
-- **Low Cooperation Strategies**: **Pessimistic (PartOfOthers 0.2, 0.8)**, **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])**, and  showed that aggressive or unpredictable strategies often resulted in high variability in outcomes, making them less reliable in fostering cooperative play.
-- **Mixed Cooperation Strategies**: **TitForTat (PartOfOthers 0.5, 1.0)**, **RandomPlayer**, **Mathematician (LinearExtrapolation 0.5)**, **GrimTrigger (7.5)** displayed a balance between cooperation and competition, performing variably depending on the opponent's strategy.
-
-![Pie Charts](/docs/dual_of_strategies/duelOfStrategiesPie.png)
-
-### Effectiveness of Cooperation
-- **Advantages of Cooperation**: Strategies that encouraged mutual cooperation, such as **AllIn** and **Optimistic**, often led to high outcomes for all players, but 
-- **Disadvantages of Cooperation**: While cooperation generally yielded highly positive results for all players in the long term, it generally benefits the opponents more than the player itself. Players with mixed or low cooperation strategies could take advantage of cooperative players.
-- **Moderate Cooperation**: Eventough the **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])** could benefit really well of the opponents trust, the **Optimistic (PartOfOthers 0.8, 1.2)** was the one with the lowest viarity
-
-
-![Gaussian Chart](/docs/dual_of_strategies/duelOfStrategiesGaussian.png)
 ## Visual Analysis
+
+### Pie charts
+
+![Pie Charts](/docs/four_each_game/fourEachGamePie.png)
+
+As is can be seen here, the mean outcome of the players only differs slightly between the most players. Only the **Pessimistic (PartOfOthers 0.2, 0.8)** and **TitForTat (PartOfOthers 0.5, 1.0)** players do have a lower mean outcome.
 
 ### Boxplots
 
-![Boxplot with absolute values](/docs/dual_of_strategies/duelOfStrategiesBoxplotAbs.png)
-![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
+![Boxplot with absolute values](/docs/four_each_game/fourEachGameBoxplotAbs.png)
+![Boxplot with log values](/docs/four_each_game/fourEachGameBoxplotLog.png)
 
-###  Heatmap
+Interesting is in the boxplot with the log values, that also the median outcome is more or less the same for every player, but the more optimistic ones do have a larger range of possible outcomes.
 
-![Heatmaps of the simulation](/docs/dual_of_strategies/duelOfStrategiesHeatmap.png)
+###  Gaussian
+
+![Gaussian Chart](/docs/four_each_game/fourEachGameGaussianLog.png)
 
 ## Conclusion
 
-The simulation provides insights into the dynamics of different player strategies in a game theory context. Strategies that balanced cooperation with rational decision-making, like **Optimistic** and **TitForTat**, tended to perform well overall. Highly aggressive or deceitful strategies could achieve high scores but were less consistent. Future simulations with more comprehensive testing can provide deeper insights.
+The **Pessimistic (PartOfOthers 0.2, 0.8)** strategy has the lowest mean outcome, but the highest minimal outcome. Therefor it can be said that low cooperation is a save conservative strategy for loosing money. On the other hand it also has a low probability of winning money. Highly cooperative strategies as **AllIn** can have bad outcome but do perform in the long run better.
 
 
 [Back to Main Documentation](/README.md)

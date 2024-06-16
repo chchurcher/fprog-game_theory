@@ -28,8 +28,6 @@ differentPlayers = [
     player.PartOfOthers(0.5, 1.0),  # TitForTat
     player.PartOfOthers(0.8, 1.2),  # Optimistic
     player.RepetitivePattern([0.8, 1., 1.2, 0.0]),  # Deceit
-    player.LinearExtrapolation(0.5),  # Mathematician
-    player.RandomPlayer(123),
     player.GrimTrigger(7.5)
 ]
 
@@ -38,9 +36,8 @@ setup1.set_players(differentPlayers)
 setup1.set_game_creator(lambda p: game.LinearFunctionByPlayer(players=p))
 setup1.set_player_per_game(4)
 setup1.start()
-setup1.chart_line_all_rounds()
 setup1.chart_boxplot(is_log=False)
 setup1.chart_boxplot(is_log=True)
 setup1.chart_pie_outcomes()
-setup1.chart_gaussian(is_log=False)
 setup1.chart_gaussian(is_log=True)
+setup1.chart_heatmap_outcome(is_log=True)
