@@ -1,4 +1,6 @@
 import itertools
+import math
+
 import matplotlib.pyplot as plt
 from statistics import median
 from matplotlib.patches import Patch
@@ -143,11 +145,17 @@ class Setup:
         plt.subplots_adjust(bottom=0.15)
         plt.show()
 
-    def chart_boxplot(self):
+    def chart_boxplot(self, is_log=False):
         """Creates a boxplot chart to visualize the outcome quartiles of the player"""
         plt.figure(figsize=(8, 6))
 
-        data_values = [[item for item in sublist if item is not None] for sublist in self.player_outcomes]
+        if is_log:
+            data_values = [[math.log1p(item) for item in sublist if item is not None] for sublist in
+                           self.player_outcomes]
+        else:
+            data_values = [[item for item in sublist if item is not None] for sublist in
+                           self.player_outcomes]
+
         plt.boxplot(data_values, vert=True, patch_artist=True)
 
         x_values = [i for i in range(1, len(self.players) + 1)]
@@ -156,7 +164,10 @@ class Setup:
         plt.subplots_adjust(bottom=0.28)
 
         plt.title("Boxplots of \"{:s}\"".format(self.name))
-        plt.ylabel("Outcome Money")
+        if is_log:
+            plt.ylabel("Log outcome Money")
+        else:
+            plt.ylabel("Outcome Money")
         plt.show()
 
     def chart_heatmap(self, value_type='abs'):
