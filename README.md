@@ -39,7 +39,7 @@ To run the code, execute the main script in the src directory:
 
 ## Results
 ### Duel of Strategies
-The simulation results of nine different players competing in games of only two players each can be found in https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dualOfStrategies.md
+The simulation results of nine different players competing in games of only two players each can be found [here](/docs/dualOfStrategies.md).
 
 ## License
 MIT License
