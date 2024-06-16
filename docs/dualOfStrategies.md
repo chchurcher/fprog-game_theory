@@ -102,16 +102,25 @@ Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calcu
 - **Low Cooperation Strategies**: **Pessimistic (PartOfOthers 0.2, 0.8)**, **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])**, and  showed that aggressive or unpredictable strategies often resulted in high variability in outcomes, making them less reliable in fostering cooperative play.
 - **Mixed Cooperation Strategies**: **TitForTat (PartOfOthers 0.5, 1.0)**, **RandomPlayer**, **Mathematician (LinearExtrapolation 0.5)**, **GrimTrigger (7.5)** displayed a balance between cooperation and competition, performing variably depending on the opponent's strategy.
 
+![Simulation Results](/dual_of_strategies/duelOfStrategiesPie.png)
+![Simulation Results](/dual_of_strategies/duelOfStrategiesGaussian.png)
+
 ### Effectiveness of Cooperation
 - **Advantages of Cooperation**: Strategies that encouraged mutual cooperation, such as **AllIn** and **Optimistic**, often led to high outcomes for all players, but 
 - **Disadvantages of Cooperation**: While cooperation generally yielded highly positive results for all players in the long term, it generally benefits the opponents more than the player itself. Players with mixed or low cooperation strategies could take advantage of cooperative players.
 - **Moderate Cooperation**: Eventough the **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])** could benefit really well of the opponents trust, the **Optimistic (PartOfOthers 0.8, 1.2)** was the one with the lowest viarity
 
+
 ## Visual Analysis
 
-![Simulation Results](path/to/simulation_results.png)
+## Boxplots
 
-The above image shows a graphical representation of the outcomes for each player.
+![Simulation Results](/dual_of_strategies/duelOfStrategiesBoxplotAbs.png)
+![Simulation Results](/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
+
+## Heatmap
+
+![Simulation Results](/dual_of_strategies/duelOfStrategiesHeatmap.png)
 
 ## Conclusion
 

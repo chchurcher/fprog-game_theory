@@ -1,4 +1,4 @@
-# fprog-game_theory
+# Game Theory Simulation Kit
 
 ## Overview
 
@@ -37,6 +37,9 @@ Different strategies can be employed by both the bank and players:
 To run the code, execute the main script in the src directory:
     ```python src/main.py```
 
+## Results
+### Duel of Strategies
+The simulation results of nine different players competing in games of only two players each can be found in https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dualOfStrategies.md
 
 ## License
 MIT License
