@@ -17,7 +17,7 @@ This document presents the results of a simulation where various player strategi
 ![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
 
 ## Game Strategy
-Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calculated by the doubled mean percentage of the individual given money amounts. High cooperation of every player is highly valued whereas low cooperation is punished by even returning less money than the input.
+Uses the **LinearFunctionByTotal** game simulation, where a multiplier is calculated by the doubled percentage of the total given money amounts. High cooperation of every player is highly valued whereas low cooperation is punished by even returning less money than the input.
 
 ## Player Strategies and Cooperation
 
