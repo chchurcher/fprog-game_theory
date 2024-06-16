@@ -12,6 +12,9 @@ This document presents the results of a simulation where various player strategi
 - **RandomPlayer (seed 123)**
 - **GrimTrigger (7.5)**
 
+
+![Boxplot with log values](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png?raw=true)
+
 ## Game Strategy
 Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calculated by the doubled mean percentage of the individual given money amounts. High cooperation of every player is highly valued whereas low cooperation is punished by even returning less money than the input.
 
@@ -102,8 +105,7 @@ Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calcu
 - **Low Cooperation Strategies**: **Pessimistic (PartOfOthers 0.2, 0.8)**, **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])**, and  showed that aggressive or unpredictable strategies often resulted in high variability in outcomes, making them less reliable in fostering cooperative play.
 - **Mixed Cooperation Strategies**: **TitForTat (PartOfOthers 0.5, 1.0)**, **RandomPlayer**, **Mathematician (LinearExtrapolation 0.5)**, **GrimTrigger (7.5)** displayed a balance between cooperation and competition, performing variably depending on the opponent's strategy.
 
-![Simulation Results](/dual_of_strategies/duelOfStrategiesPie.png)
-![Simulation Results](/dual_of_strategies/duelOfStrategiesGaussian.png)
+![Pie Charts](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesPie.png?raw=true)
 
 ### Effectiveness of Cooperation
 - **Advantages of Cooperation**: Strategies that encouraged mutual cooperation, such as **AllIn** and **Optimistic**, often led to high outcomes for all players, but 
@@ -111,16 +113,19 @@ Uses the **LinearFunctionByPlayer** game simulation, where a multiplier is calcu
 - **Moderate Cooperation**: Eventough the **Deceit (RepetitivePattern [0.8, 1.0, 1.2, 0.0])** could benefit really well of the opponents trust, the **Optimistic (PartOfOthers 0.8, 1.2)** was the one with the lowest viarity
 
 
+![Gaussian Chart](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesGaussian.png?raw=true)
+
+
 ## Visual Analysis
 
 ## Boxplots
 
-![Simulation Results](/dual_of_strategies/duelOfStrategiesBoxplotAbs.png)
-![Simulation Results](/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
+![Boxplot with absolute values](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesBoxplotAbs.png?raw=true)
+![Boxplot with log values](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png?raw=true)
 
 ## Heatmap
 
-![Simulation Results](/dual_of_strategies/duelOfStrategiesHeatmap.png)
+![Heatmaps of the simulation](https://github.com/chchurcher/fprog-game_theory/tree/main/docs/dual_of_strategies/duelOfStrategiesHeatmap.png?raw=true)
 
 ## Conclusion
 
