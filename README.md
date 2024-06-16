@@ -40,6 +40,8 @@ To run the code, execute the main script in the src directory:
 ## Results
 ### Duel of Strategies
 The simulation results of nine different players competing in games of only two players each can be found [here](/docs/dualOfStrategies.md).
+![Boxplot with log values](/docs/dual_of_strategies/duelOfStrategiesBoxplotLog.png)
+
 
 ## License
 MIT License
