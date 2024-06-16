@@ -159,8 +159,13 @@ class Setup:
         plt.ylabel("Outcome Money")
         plt.show()
 
-    def chart_heatmap(self):
-        """Creates a heatmap chart to visualize how the players compete against each other players"""
+    def chart_heatmap(self, value_type='abs'):
+        """Creates a heatmap chart to visualize how the players compete against each other players
+        :param value_type: Determines what in shown in the heatmap
+            'abs'     Absolute value of the outcome in each duel
+            'rel'     Relative value (difference) between the outcomes
+            'abs_log' Log of absolute values of the outcome
+            'rel_log' Log of differences"""
 
         # Restricted to two players per game
         if self.num_player_per_game != 2:
@@ -173,15 +178,39 @@ class Setup:
         heatmap_data[:] = np.nan
         for i in range(len(self.player_combinations)):
             combination = self.player_combinations[i]
-            heatmap_data[combination[0], combination[1]] = np.log1p(self.player_outcomes[combination[0]][i])
-            heatmap_data[combination[1], combination[0]] = np.log1p(self.player_outcomes[combination[1]][i])
+            if value_type == 'abs' or value_type == 'abs_log':
+                heatmap_data[combination[0], combination[1]] = self.player_outcomes[combination[0]][i]
+                heatmap_data[combination[1], combination[0]] = self.player_outcomes[combination[1]][i]
+            elif value_type == 'rel_log':
+                difference = self.player_outcomes[combination[0]][i] / self.player_outcomes[combination[1]][i]
+                heatmap_data[combination[0], combination[1]] = difference
+                heatmap_data[combination[1], combination[0]] = 1. / difference
+            else:
+                difference = self.player_outcomes[combination[0]][i] - self.player_outcomes[combination[1]][i]
+                heatmap_data[combination[0], combination[1]] = difference
+                heatmap_data[combination[1], combination[0]] = -difference
+
+        if value_type == 'abs_log' or value_type == 'rel_log':
+            heatmap_data = np.log1p(heatmap_data)
+
         labels = [f'{str(i)}: {str(self.players[i])}' for i in range(len(self.players))]
 
         # Plot the heatmap
         sns.heatmap(heatmap_data, annot=True, cmap='viridis', cbar=False, xticklabels=list(range(len(self.players))),
                     yticklabels=labels)
         plt.subplots_adjust(top=0.9, left=0.4)
-        plt.title(self.name)
+        plt.xlabel("Opponent")
+        plt.ylabel("Player performances")
+        type_string = ""
+        if value_type == 'abs':
+            type_string = 'Absolute outcomes'
+        elif value_type == 'rel':
+            type_string = 'Relative outcomes'
+        elif value_type == 'abs_log':
+            type_string = 'Log absolute outcomes'
+        elif value_type == 'rel_log':
+            type_string = 'Log relative outcomes'
+        plt.title(self.name + f' ({type_string})')
         plt.show()
     # endregion
 
